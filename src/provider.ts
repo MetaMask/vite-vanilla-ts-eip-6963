@@ -23,7 +23,7 @@ let providers: EIP6963ProviderDetail[] = [];
 export function listProviders(element: HTMLDivElement) {
   window.addEventListener('eip6963:announceProvider',
     (event: EIP6963AnnounceProviderEvent) => {
-      console.log(`Provider announced: ${event.detail.info.name} \n Event: ${event}`)
+      // console.log(`Provider announced: ${event.detail.info.name} \n Event: ${event}`)
       providers.push(event.detail);
     }
   );
