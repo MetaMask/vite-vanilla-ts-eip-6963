@@ -12,7 +12,7 @@ let providers: EIP6963ProviderDetail[] = [];
     await wallet.provider
       .request({ method: 'eth_requestAccounts' })
       .catch(error => {
-        console.error("Error requesting accounts:", error);
+        console.error("Error requesting Ethereum accounts:", error);
         throw error;
       });
   } catch (error) {
@@ -23,8 +23,7 @@ let providers: EIP6963ProviderDetail[] = [];
 export function listProviders(element: HTMLDivElement) {
   window.addEventListener('eip6963:announceProvider',
     (event: EIP6963AnnounceProviderEvent) => {
-      // console.log("Provider announced:", event.detail.info);
-      // console.log("Event:", event);
+      console.log(`Provider announced: ${event.detail.info.name} \n Event: ${event}`)
       providers.push(event.detail);
     }
   );

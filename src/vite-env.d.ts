@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-/// <reference types="vite/client" />
 
 interface EIP1193Provider {
   isStatus?: boolean;
