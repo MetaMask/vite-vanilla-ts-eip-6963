@@ -6,45 +6,38 @@ declare global {
 
 let providers: EIP6963ProviderDetail[] = [];
 
-export const connectWithProvider = async (providerWithInfo: EIP6963ProviderDetail, providerInfo: EIP6963ProviderInfo) => {
-    try {
-      const accounts = await providerWithInfo.provider
-        .request({ method: 'eth_requestAccounts' })
-        .catch(error => {
-          console.error("Error requesting accounts:", error); // Debugging log for errors
-          throw error; // Rethrow the error to ensure it's caught by the catch block
-        });
-
-        console.log(`Accounts: ${JSON.stringify(accounts)}`)
-
-      if (accounts?.[0] as string) {
-        localStorage.setItem('connectedWallet', JSON.stringify(providerInfo));
-      } else {
-        console.log("No accounts returned from provider."); // Debugging log for no accounts
-      }
-    } catch (error) {
-      console.error("Failed to connect to provider:", error); // Debugging log for connection failure
+(window as any).connectWithProvider = async (walletIndex: number) => {
+  const wallet = providers[walletIndex];
+  try {
+    await wallet.provider
+      .request({ method: 'eth_requestAccounts' })
+      .catch(error => {
+        console.error("Error requesting accounts:", error);
+        throw error;
+      });
+  } catch (error) {
+    console.error("Failed to connect to provider:", error);
   }
 };
 
 export function listProviders(element: HTMLDivElement) {
-
-  window.addEventListener('eip6963:announceProvider', 
+  window.addEventListener('eip6963:announceProvider',
     (event: EIP6963AnnounceProviderEvent) => {
-      console.log("Provider announced:", event.detail.info);
+      // console.log("Provider announced:", event.detail.info);
+      // console.log("Event:", event);
       providers.push(event.detail);
     }
   );
 
   window.dispatchEvent(new Event("eip6963:requestProvider"));
 
-  let buttonList = providers.map(function(prov){
+  let buttonList = providers.map(function (wallet, walletIndex) {
     return `
-      <button key="${prov.info.rdns}" onClick="() => connectWithProvider(${JSON.stringify(prov)}, ${JSON.stringify(prov.info)});">
-        <img src="${prov.info.icon}" alt="${prov.info.name}" />
-        <div>${prov.info.name}</div>
-      </button>`;
-})
+        <button key="${wallet.info.rdns}" onClick="window.connectWithProvider(${walletIndex});">
+          <img src="${wallet.info.icon}" alt="${wallet.info.name}" />
+          <div>${wallet.info.name}</div>
+        </button>`;
+  })
 
   element.innerHTML = buttonList.join('');
 }
