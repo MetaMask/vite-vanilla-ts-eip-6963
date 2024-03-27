@@ -9,16 +9,11 @@ interface EIP1193Provider {
   request: (request: { method: string, params?: Array<unknown> }) => Promise<unknown>
 }
 
-
 interface EIP6963ProviderInfo {
   rdns: string;
   uuid: string;
   name: string;
   icon: string;
-}
-
-interface WalletSelected extends EIP6963ProviderInfo {
-  accountString: string;
 }
 
 interface EIP6963ProviderDetail {
