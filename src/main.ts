@@ -1,5 +1,5 @@
 import './style.css'
-import { listProviders } from './provider.ts'
+import { listProviders } from './providers.ts'
 // `provider.ts` is imported and the listProviders function is called at bottom of file
 
 // this querySelector is used to select the element with the id of `app` and set its innerHTML to the following:
